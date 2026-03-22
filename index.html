@@ -1,410 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lethoke Collins · Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#0A0A0F;--surface:#111118;--surface2:#18181F;
-      --border:rgba(255,255,255,0.07);--text:#F0EEF8;--muted:#7A7890;
-      --accent:#7C6FFF;--accent2:#FF6B6B;--accent3:#00D9A3;
-      --grad:linear-gradient(135deg,#7C6FFF,#FF6B6B);
-      --font:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
-    }
-    html{scroll-behavior:smooth}
-    body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lethoke Collins - Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0F;--surface:#111118;--surface2:#18181F;
+  --border:rgba(255,255,255,0.07);--text:#F0EEF8;--muted:#7A7890;
+  --accent:#7C6FFF;--accent2:#FF6B6B;--accent3:#00D9A3;
+  --grad:linear-gradient(135deg,#7C6FFF,#FF6B6B);
+  --font:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
 
-    /* CURSOR */
-    .cursor{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:screen}
-    .cursor-ring{width:38px;height:38px;border:1.5px solid rgba(124,111,255,0.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width 0.25s,height 0.25s,border-color 0.25s}
-    body:has(a:hover) .cursor-ring,body:has(.click:hover) .cursor-ring{width:54px;height:54px;border-color:rgba(255,107,107,0.7)}
-    a,.click,.btn-p,.btn-s{cursor:none}
+/* LOADER */
+.loader{position:fixed;inset:0;background:var(--bg);z-index:9000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity 0.6s ease,visibility 0.6s ease}
+.loader.hide{opacity:0;visibility:hidden}
+.loader-logo{font-family:var(--font);font-weight:800;font-size:3rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:lp 1.2s ease infinite alternate}
+.loader-bar{width:200px;height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+.loader-fill{height:100%;background:var(--grad);border-radius:2px;animation:lf 1.4s ease forwards}
+@keyframes lp{0%{opacity:0.4;transform:scale(0.97)}100%{opacity:1;transform:scale(1)}}
+@keyframes lf{0%{width:0%}100%{width:100%}}
 
-    /* NAV */
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-    .nav-logo{font-weight:800;font-size:1.2rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .nav-links{display:flex;gap:2rem;list-style:none}
-    .nav-links a{font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
-    .nav-links a:hover{color:var(--text)}
+/* CURSOR */
+.cur{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:screen;transform:translate(-50%,-50%)}
+.cur-ring{width:38px;height:38px;border:1.5px solid rgba(124,111,255,0.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.25s,height 0.25s,border-color 0.25s}
+body:has(a:hover) .cur-ring,body:has(.cl:hover) .cur-ring{width:54px;height:54px;border-color:rgba(255,107,107,0.7)}
+a,.cl,.bp,.bs{cursor:none}
 
-    /* HERO */
-    #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;overflow:hidden}
-    .glow1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,111,255,0.15) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
-    .glow2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,107,0.08) 0%,transparent 70%);bottom:50px;left:200px;pointer-events:none}
-    .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:0.4rem 1rem;font-size:0.78rem;color:var(--muted);margin-bottom:2rem;width:fit-content}
-    .hero-badge .dot{width:6px;height:6px;background:var(--accent3);border-radius:50%;animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
-    .hero-name{font-weight:800;font-size:clamp(3.5rem,8vw,7rem);line-height:0.95;letter-spacing:-0.04em;margin-bottom:1.5rem}
-    .hero-name .l1{display:block;color:var(--text)}
-    .hero-name .l2{display:block;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .hero-pills{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2.5rem}
-    .pill{font-size:0.78rem;padding:0.4rem 1rem;border-radius:100px;border:1px solid var(--border);color:var(--muted);background:var(--surface)}
-    .hero-desc{max-width:520px;font-size:1rem;line-height:1.7;color:var(--muted);margin-bottom:3rem}
-    .ctas{display:flex;gap:1rem;flex-wrap:wrap}
-    .btn-p{display:inline-flex;align-items:center;gap:0.5rem;background:var(--grad);color:#fff;padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:600;text-decoration:none;transition:opacity 0.2s,transform 0.2s}
-    .btn-p:hover{opacity:0.85;transform:translateY(-2px)}
-    .btn-s{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--text);padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:500;text-decoration:none;border:1px solid var(--border);transition:border-color 0.2s,transform 0.2s}
-    .btn-s:hover{border-color:var(--accent);transform:translateY(-2px)}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-weight:800;font-size:1.2rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nl{display:flex;gap:2rem;list-style:none}
+.nl a{font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.nl a:hover{color:var(--text)}
 
-    /* SHARED */
-    .sec{padding:6rem 4rem;position:relative;z-index:1}
-    .sec-dark{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-    .inner{max-width:1100px;margin:0 auto}
-    .sec-tag{font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.75rem}
-    .sec-tag::after{content:'';width:30px;height:1px;background:var(--accent);opacity:0.5}
-    .sec-title{font-weight:800;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-0.03em;line-height:1.1;margin-bottom:2rem}
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;overflow:hidden}
+.g1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,111,255,0.15) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
+.g2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,107,0.08) 0%,transparent 70%);bottom:50px;left:200px;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:0.4rem 1rem;font-size:0.78rem;color:var(--muted);margin-bottom:2rem;width:fit-content;opacity:0;animation:fadeUp 0.6s ease 0.2s forwards}
+.dot{width:6px;height:6px;background:var(--accent3);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
+.hn{font-weight:800;font-size:clamp(3.5rem,8vw,7rem);line-height:0.95;letter-spacing:-0.04em;margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.7s ease 0.4s forwards}
+.hn .l1{display:block;color:var(--text)}
+.hn .l2{display:block;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pills{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.7s ease 0.6s forwards}
+.pill{font-size:0.78rem;padding:0.4rem 1rem;border-radius:100px;border:1px solid var(--border);color:var(--muted);background:var(--surface)}
+.hdesc{max-width:520px;font-size:1rem;line-height:1.7;color:var(--muted);margin-bottom:3rem;opacity:0;animation:fadeUp 0.7s ease 0.8s forwards}
+.ctas{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s ease 1s forwards}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:translateY(0)}}
+.bp{display:inline-flex;align-items:center;gap:0.5rem;background:var(--grad);color:#fff;padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:600;text-decoration:none;transition:opacity 0.2s,transform 0.2s,box-shadow 0.2s}
+.bp:hover{opacity:0.9;transform:translateY(-3px);box-shadow:0 12px 30px rgba(124,111,255,0.35)}
+.bs{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--text);padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:500;text-decoration:none;border:1px solid var(--border);transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s}
+.bs:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 30px rgba(124,111,255,0.15)}
 
-    /* ABOUT */
-    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
-    .about-text p{color:var(--muted);line-height:1.8;margin-bottom:1.2rem;font-size:0.97rem}
-    .stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem}
-    .stat{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.2rem}
-    .stat-n{font-weight:800;font-size:2rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-    .stat-l{font-size:0.76rem;color:var(--muted);margin-top:0.3rem}
-    .about-card{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:2rem}
-    .avatar{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.6rem;color:#fff;margin-bottom:1.2rem;overflow:hidden;position:relative;border:2px solid rgba(124,111,255,0.3)}
-    .avatar img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-    .about-card h3{font-weight:700;font-size:1.1rem;margin-bottom:0.3rem}
-    .about-card .sub{font-size:0.82rem;color:var(--muted);margin-bottom:1.2rem}
-    .links{display:flex;flex-direction:column;gap:0.6rem}
-    .alink{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1rem;border-radius:10px;background:var(--surface);border:1px solid var(--border);text-decoration:none;color:var(--text);font-size:0.82rem;transition:border-color 0.2s,transform 0.15s}
-    .alink:hover{border-color:var(--accent);transform:translateX(4px)}
-    .alink .hint{color:var(--muted);font-size:0.75rem}
+/* SHARED */
+.sec{padding:6rem 4rem}
+.dark{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.inn{max-width:1100px;margin:0 auto}
+.stag{font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.75rem}
+.stag::after{content:'';width:30px;height:1px;background:var(--accent);opacity:0.5}
+.stitle{font-weight:800;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-0.03em;line-height:1.1;margin-bottom:2rem}
 
-    /* SKILLS */
-    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;margin-top:2.5rem}
-    .skill{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem;transition:border-color 0.2s,transform 0.2s}
-    .skill:hover{border-color:var(--accent);transform:translateY(-4px)}
-    .skill-ico{font-size:1.5rem;margin-bottom:0.6rem}
-    .skill-name{font-weight:700;font-size:0.95rem;margin-bottom:0.3rem}
-    .skill-desc{font-size:0.8rem;color:var(--muted);line-height:1.6}
-    .tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem}
-    .tag{font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:100px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+/* SCROLL REVEAL */
+.sr{opacity:0;transform:translateY(32px);transition:opacity 0.65s ease,transform 0.65s ease}
+.sr.on{opacity:1;transform:translateY(0)}
 
-    /* PROJECTS */
-    .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
-    .proj{background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:border-color 0.2s,transform 0.2s}
-    .proj:hover{border-color:var(--accent);transform:translateY(-6px)}
-    .proj.feat{grid-column:span 2}
-    .proj-thumb{height:200px;position:relative;overflow:hidden}
-    .proj.feat .proj-thumb{height:240px}
-    .proj-thumb .photo{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:2}
-    .t-accomo{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364)}
-    .t-port{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)}
-    .thumb-fill{width:100%;height:100%;position:absolute;inset:0;z-index:1}
-    .badge{position:absolute;top:1rem;right:1rem;font-size:0.68rem;padding:0.3rem 0.75rem;border-radius:100px;background:rgba(0,217,163,0.15);color:var(--accent3);border:1px solid rgba(0,217,163,0.3);font-weight:500;z-index:3}
-    .thumb-lbl{position:absolute;bottom:1rem;left:1.2rem;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);z-index:3}
-    .proj-body{padding:1.6rem}
-    .proj-name{font-weight:700;font-size:1.1rem;margin-bottom:0.5rem}
-    .proj-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1rem}
-    .proj-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.2rem}
-    .proj-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:500;transition:gap 0.2s}
-    .proj-link:hover{gap:0.7rem}
+/* ABOUT */
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.atext p{color:var(--muted);line-height:1.8;margin-bottom:1.2rem;font-size:0.97rem}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem}
+.stat{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;transition:border-color 0.2s,transform 0.2s}
+.stat:hover{border-color:var(--accent);transform:translateY(-3px)}
+.stn{font-weight:800;font-size:2rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.stl{font-size:0.76rem;color:var(--muted);margin-top:0.3rem}
+.acard{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:2rem}
+.av{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.6rem;color:#fff;margin-bottom:1.2rem;overflow:hidden;position:relative;border:2px solid rgba(124,111,255,0.3)}
+.av img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.acard h3{font-weight:700;font-size:1.1rem;margin-bottom:0.3rem}
+.acard .sub{font-size:0.82rem;color:var(--muted);margin-bottom:1.2rem}
+.lks{display:flex;flex-direction:column;gap:0.6rem}
+.lk{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1rem;border-radius:10px;background:var(--surface);border:1px solid var(--border);text-decoration:none;color:var(--text);font-size:0.82rem;transition:border-color 0.2s,transform 0.15s,box-shadow 0.2s}
+.lk:hover{border-color:var(--accent);transform:translateX(5px);box-shadow:0 4px 20px rgba(124,111,255,0.1)}
+.lk .h{color:var(--muted);font-size:0.75rem}
 
-    /* CERTS */
-    .certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;margin-top:2.5rem}
-    .cert{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.6rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s}
-    .cert.click{cursor:none}
-    .cert.click:hover{border-color:var(--accent3)}
-    .cert-ico{width:42px;height:42px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
-    .ci-blue{background:rgba(124,111,255,0.12)}
-    .ci-green{background:rgba(0,217,163,0.12)}
-    .ci-orange{background:rgba(255,165,0,0.12)}
-    .cert-info h4{font-weight:700;font-size:0.9rem;margin-bottom:0.3rem}
-    .cert-info p{font-size:0.78rem;color:var(--muted);line-height:1.5}
-    .cs{margin-top:0.6rem;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:100px;display:inline-block;font-weight:500}
-    .cs-prog{background:rgba(255,165,0,0.12);color:#FFA500;border:1px solid rgba(255,165,0,0.25)}
-    .cs-done{background:rgba(0,217,163,0.1);color:var(--accent3);border:1px solid rgba(0,217,163,0.2)}
-    .view-hint{display:block;font-size:0.7rem;color:var(--accent3);margin-top:0.4rem}
+/* SKILLS */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;margin-top:2.5rem}
+.sk{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem;transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s}
+.sk:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 16px 40px rgba(124,111,255,0.12)}
+.si{font-size:1.5rem;margin-bottom:0.6rem}
+.sn2{font-weight:700;font-size:0.95rem;margin-bottom:0.3rem}
+.sd{font-size:0.8rem;color:var(--muted);line-height:1.6}
+.tgs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem}
+.tg{font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:100px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
 
-    /* LIGHTBOX */
-    .lb{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.93);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:2rem}
-    .lb.open{display:flex}
-    .lb-inner{position:relative;max-width:860px;width:100%}
-    .lb-close{position:absolute;top:-1rem;right:-1rem;width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;font-size:0.95rem;color:var(--muted);transition:color 0.2s,border-color 0.2s;z-index:10}
-    .lb-close:hover{color:var(--text);border-color:var(--accent2)}
-    .lb-frame{width:100%;height:72vh;border:none;border-radius:10px;display:block;background:#fff}
-    .lb-cap{text-align:center;margin-top:0.8rem;font-size:0.8rem;color:var(--muted)}
+/* PROJECTS */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
+.pj{background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s}
+.pj:hover{border-color:var(--accent);transform:translateY(-8px);box-shadow:0 20px 50px rgba(124,111,255,0.15)}
+.pj.ft{grid-column:span 2}
+.pt{height:200px;position:relative;overflow:hidden}
+.pj.ft .pt{height:240px}
+.pt .ph{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:2;transition:transform 0.4s ease}
+.pj:hover .ph{transform:scale(1.04)}
+.ta{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364)}
+.tp{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)}
+.tf{width:100%;height:100%;position:absolute;inset:0;z-index:1}
+.bdg{position:absolute;top:1rem;right:1rem;font-size:0.68rem;padding:0.3rem 0.75rem;border-radius:100px;background:rgba(0,217,163,0.15);color:var(--accent3);border:1px solid rgba(0,217,163,0.3);font-weight:500;z-index:3}
+.tlbl{position:absolute;bottom:1rem;left:1.2rem;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);z-index:3}
+.pb{padding:1.6rem}
+.pn{font-weight:700;font-size:1.1rem;margin-bottom:0.5rem}
+.pd{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1rem}
+.ptgs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.2rem}
+.pl{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:500;transition:gap 0.2s}
+.pl:hover{gap:0.8rem}
 
-    /* CONTACT */
-    #contact{text-align:center}
-    .contact-inner{max-width:580px;margin:0 auto}
-    .contact-inner .sec-tag{justify-content:center}
-    .contact-inner .sec-tag::after{display:none}
-    .cdesc{color:var(--muted);margin:0.8rem 0 2.5rem;font-size:0.97rem;line-height:1.7}
-    .contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem}
-    .ccard{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.3rem;text-align:left;text-decoration:none;color:var(--text);transition:border-color 0.2s,transform 0.15s}
-    .ccard:hover{border-color:var(--accent);transform:translateY(-3px)}
-    .ccard-ico{font-size:1.3rem;margin-bottom:0.5rem}
-    .ccard h4{font-weight:700;font-size:0.86rem;margin-bottom:0.2rem}
-    .ccard p{font-size:0.76rem;color:var(--muted)}
+/* CERTS */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;margin-top:2.5rem}
+.ct{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.6rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s}
+.ct:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.3)}
+.ct.cl{cursor:none}
+.ct.cl:hover{border-color:var(--accent3)}
+.ci{width:42px;height:42px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.cib{background:rgba(124,111,255,0.12)}
+.cig{background:rgba(0,217,163,0.12)}
+.cio{background:rgba(255,165,0,0.12)}
+.ci2 h4{font-weight:700;font-size:0.9rem;margin-bottom:0.3rem}
+.ci2 p{font-size:0.78rem;color:var(--muted);line-height:1.5}
+.cs{margin-top:0.6rem;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:100px;display:inline-block;font-weight:500}
+.csp{background:rgba(255,165,0,0.12);color:#FFA500;border:1px solid rgba(255,165,0,0.25)}
+.csd{background:rgba(0,217,163,0.1);color:var(--accent3);border:1px solid rgba(0,217,163,0.2)}
+.vh{display:block;font-size:0.7rem;color:var(--accent3);margin-top:0.4rem}
 
-    /* FOOTER */
-    footer{padding:2rem 4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--muted)}
-    footer a{color:var(--muted);text-decoration:none}
-    footer a:hover{color:var(--text)}
+/* LIGHTBOX */
+.lb{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.93);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:2rem}
+.lb.open{display:flex}
+.lbi{position:relative;max-width:860px;width:100%}
+.lbc{position:absolute;top:-1rem;right:-1rem;width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;font-size:0.95rem;color:var(--muted);z-index:10;transition:color 0.2s,border-color 0.2s}
+.lbc:hover{color:var(--text);border-color:var(--accent2)}
+.lbf{width:100%;height:72vh;border:none;border-radius:10px;display:block}
+.lbcap{text-align:center;margin-top:0.8rem;font-size:0.8rem;color:var(--muted)}
 
-    /* REVEAL */
-    .r{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
-    .r.on{opacity:1;transform:translateY(0)}
+/* CONTACT */
+#contact{text-align:center}
+.cin{max-width:580px;margin:0 auto}
+.cin .stag{justify-content:center}
+.cin .stag::after{display:none}
+.cd{color:var(--muted);margin:0.8rem 0 2.5rem;font-size:0.97rem;line-height:1.7}
+.ccards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem}
+.cc{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.3rem;text-align:left;text-decoration:none;color:var(--text);transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s}
+.cc:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 30px rgba(124,111,255,0.12)}
+.cci{font-size:1.3rem;margin-bottom:0.5rem}
+.cc h4{font-weight:700;font-size:0.86rem;margin-bottom:0.2rem}
+.cc p{font-size:0.76rem;color:var(--muted)}
 
-    @media(max-width:768px){
-      nav{padding:1rem 1.5rem}.nav-links{display:none}
-      .sec{padding:4rem 1.5rem}
-      #hero{padding:6rem 1.5rem 3rem}
-      .about-grid{grid-template-columns:1fr;gap:2.5rem}
-      .proj-grid{grid-template-columns:1fr}
-      .proj.feat{grid-column:span 1}
-      .contact-cards{grid-template-columns:1fr}
-      footer{flex-direction:column;gap:1rem;text-align:center}
-    }
-  </style>
+/* FOOTER */
+footer{padding:2rem 4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--text)}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}.nl{display:none}
+  .sec{padding:4rem 1.5rem}
+  #hero{padding:6rem 1.5rem 3rem}
+  .agrid{grid-template-columns:1fr;gap:2.5rem}
+  .pgrid{grid-template-columns:1fr}
+  .pj.ft{grid-column:span 1}
+  .ccards{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:1rem;text-align:center}
+}
+</style>
 </head>
 <body>
 
-  <div class="cursor" id="cur"></div>
-  <div class="cursor-ring" id="curR"></div>
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo">LC.</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
 
-  <!-- LIGHTBOX -->
-  <div class="lb" id="lb">
-    <div class="lb-inner">
-      <div class="lb-close" onclick="closeLb()">✕</div>
-      <div style="background:#fff;border-radius:10px;overflow:hidden;">
-        <iframe class="lb-frame" src="cisco_cert.pdf"></iframe>
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curR"></div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb">
+  <div class="lbi">
+    <div class="lbc" onclick="closeLb()">X</div>
+    <div style="background:#fff;border-radius:10px;overflow:hidden;">
+      <iframe class="lbf" src="cisco_cert.pdf"></iframe>
+    </div>
+    <div class="lbcap">CCNAv7: Introduction to Networks - Cisco Networking Academy - 2024</div>
+  </div>
+</div>
+
+<nav>
+  <div class="logo">LC.</div>
+  <ul class="nl">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="g1"></div>
+  <div class="g2"></div>
+  <div class="badge"><span class="dot"></span> Available for internships and graduate programmes</div>
+  <h1 class="hn">
+    <span class="l1">Lethoke</span>
+    <span class="l2">Collins.</span>
+  </h1>
+  <div class="pills">
+    <span class="pill">UX/UI Design</span>
+    <span class="pill">Business Analysis</span>
+    <span class="pill">Project Coordination</span>
+    <span class="pill">Software Testing</span>
+    <span class="pill">App Development</span>
+  </div>
+  <p class="hdesc">IT student at Vaal University of Technology building user-centred digital products. I care about how things work and how they feel.</p>
+  <div class="ctas">
+    <a href="#projects" class="bp">View My Work</a>
+    <a href="Sekhukhune_Collins_CV.docx" download class="bs">Download CV</a>
+  </div>
+</section>
+
+<section id="about" class="sec dark">
+  <div class="inn agrid">
+    <div class="atext sr">
+      <div class="stag">About Me</div>
+      <h2 class="stitle">Building things<br/>people actually use</h2>
+      <p>I'm Sekhukhune Lethoke Collins, an Information Technology student at Vaal University of Technology (VUT) graduating in 2026. I'm passionate about the full picture from understanding user needs to shipping clean, functional interfaces.</p>
+      <p>My work spans UX/UI design, application development, business analysis, project coordination, and software testing. I believe good design is invisible - it just works.</p>
+      <p>Currently pursuing the CTFL-AT (Certified Tester Foundation Level Agile Tester) certification alongside my studies.</p>
+      <div class="stats">
+        <div class="stat sr"><div class="stn">2026</div><div class="stl">Expected graduation</div></div>
+        <div class="stat sr"><div class="stn">1+</div><div class="stl">Live project</div></div>
+        <div class="stat sr"><div class="stn">6</div><div class="stl">Specialisations</div></div>
+        <div class="stat sr"><div class="stn">VUT</div><div class="stl">Vanderbijlpark</div></div>
       </div>
-      <div class="lb-cap">CCNAv7: Introduction to Networks · Cisco Networking Academy · 2024</div>
+    </div>
+    <div class="sr" style="display:flex;justify-content:center;">
+      <div class="acard">
+        <div class="av">
+          <span>LC</span>
+          <img src="profile.jpg" alt="" onerror="this.style.display='none'"/>
+        </div>
+        <h3>Lethoke Collins</h3>
+        <p class="sub">IT Student - Developer - Designer</p>
+        <div class="lks">
+          <a href="https://github.com/letho351" target="_blank" class="lk"><span>GitHub</span><span class="h">github.com/letho351</span></a>
+          <a href="mailto:lethokecollins@gmail.com" class="lk"><span>Email</span><span class="h">lethokecollins@gmail.com</span></a>
+          <a href="https://www.studentaccomo.co.za" target="_blank" class="lk"><span>StudentAccomo</span><span class="h">studentaccomo.co.za</span></a>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">LC.</div>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#certifications">Certifications</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO -->
-  <section id="hero">
-    <div class="glow1"></div>
-    <div class="glow2"></div>
-    <div class="hero-badge"><span class="dot"></span> Available for internships &amp; graduate programmes</div>
-    <h1 class="hero-name">
-      <span class="l1">Lethoke</span>
-      <span class="l2">Collins.</span>
-    </h1>
-    <div class="hero-pills">
-      <span class="pill">UX/UI Design</span>
-      <span class="pill">Business Analysis</span>
-      <span class="pill">Project Coordination</span>
-      <span class="pill">Software Testing</span>
-      <span class="pill">App Development</span>
+<section id="skills" class="sec">
+  <div class="inn">
+    <div class="stag sr">Skills</div>
+    <h2 class="stitle sr">What I bring to the table</h2>
+    <div class="sgrid">
+      <div class="sk sr"><div class="si">🎨</div><div class="sn2">UX/UI Design</div><div class="sd">Designing interfaces that are intuitive, accessible, and visually compelling.</div><div class="tgs"><span class="tg">Figma</span><span class="tg">Wireframing</span><span class="tg">User Flows</span></div></div>
+      <div class="sk sr"><div class="si">💻</div><div class="sn2">Frontend Development</div><div class="sd">Building responsive web interfaces with clean, semantic code.</div><div class="tgs"><span class="tg">HTML</span><span class="tg">CSS</span><span class="tg">JavaScript</span></div></div>
+      <div class="sk sr"><div class="si">☕</div><div class="sn2">Application Development</div><div class="sd">Building desktop and mobile applications with Java and OOP principles.</div><div class="tgs"><span class="tg">Java</span><span class="tg">OOP</span><span class="tg">Node.js</span></div></div>
+      <div class="sk sr"><div class="si">🧪</div><div class="sn2">Software Testing</div><div class="sd">Ensuring software quality. Currently completing CTFL-AT Agile Tester certification.</div><div class="tgs"><span class="tg">Agile Testing</span><span class="tg">CTFL-AT</span><span class="tg">QA</span></div></div>
+      <div class="sk sr"><div class="si">📊</div><div class="sn2">Business Analysis</div><div class="sd">Bridging business needs and technical solutions through requirements and documentation.</div><div class="tgs"><span class="tg">Requirements</span><span class="tg">Process Modelling</span></div></div>
+      <div class="sk sr"><div class="si">📋</div><div class="sn2">Project Coordination</div><div class="sd">Keeping projects on track through planning, communication, and collaboration.</div><div class="tgs"><span class="tg">Planning</span><span class="tg">Agile</span><span class="tg">Communication</span></div></div>
     </div>
-    <p class="hero-desc">IT student at Vaal University of Technology building user-centred digital products. I care about how things work <em>and</em> how they feel.</p>
-    <div class="ctas">
-      <a href="#projects" class="btn-p">View My Work ↓</a>
-      <a href="Sekhukhune_Collins_CV.docx" download class="btn-s">Download CV</a>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ABOUT -->
-  <section id="about" class="sec sec-dark">
-    <div class="inner about-grid">
-      <div class="about-text r">
-        <div class="sec-tag">About Me</div>
-        <h2 class="sec-title">Building things<br/>people actually use</h2>
-        <p>I'm Sekhukhune Lethoke Collins, an Information Technology student at Vaal University of Technology (VUT) graduating in 2026. I'm passionate about the full picture — from understanding user needs to shipping clean, functional interfaces.</p>
-        <p>My work spans UX/UI design, application development, business analysis, project coordination, and software testing. I believe good design is invisible — it just works.</p>
-        <p>Currently pursuing the CTFL-AT (Certified Tester Foundation Level – Agile Tester) certification alongside my studies.</p>
-        <div class="stats">
-          <div class="stat"><div class="stat-n">2026</div><div class="stat-l">Expected graduation</div></div>
-          <div class="stat"><div class="stat-n">1+</div><div class="stat-l">Live project</div></div>
-          <div class="stat"><div class="stat-n">4</div><div class="stat-l">Focus areas</div></div>
-          <div class="stat"><div class="stat-n">VUT</div><div class="stat-l">Vanderbijlpark</div></div>
+<section id="projects" class="sec dark">
+  <div class="inn">
+    <div class="stag sr">Projects</div>
+    <h2 class="stitle sr">Things I have built</h2>
+    <div class="pgrid">
+      <div class="pj ft sr">
+        <div class="pt ta">
+          <img class="ph" src="accomo_screenshot.png" onerror="this.style.display='none'"/>
+          <div class="tf ta"></div>
+          <span class="bdg">Live</span>
+          <span class="tlbl">Web Application</span>
+        </div>
+        <div class="pb">
+          <div class="pn">Student Accommodation Finder</div>
+          <p class="pd">A web application helping VUT students find nearby accommodation. Students can discover, filter, and browse listings in one place. Built with a focus on usability and clean UX.</p>
+          <div class="ptgs"><span class="tg">HTML</span><span class="tg">CSS</span><span class="tg">JavaScript</span><span class="tg">UX Design</span></div>
+          <a href="https://www.studentaccomo.co.za" target="_blank" class="pl">Visit Live Site</a>
         </div>
       </div>
-      <div class="r" style="display:flex;justify-content:center;">
-        <div class="about-card">
-          <!-- Add profile.jpg to your GitHub folder to show your photo -->
-          <div class="avatar">
-            <span>LC</span>
-            <img src="profile.jpg" alt="" onerror="this.style.display='none'"/>
-          </div>
-          <h3>Lethoke Collins</h3>
-          <p class="sub">IT Student · Developer · Designer</p>
-          <div class="links">
-            <a href="https://github.com/letho351" target="_blank" class="alink"><span>⚡ GitHub</span><span class="hint">github.com/letho351 →</span></a>
-            <a href="mailto:lethokecollins@gmail.com" class="alink"><span>✉️ Email</span><span class="hint">lethokecollins@gmail.com →</span></a>
-            <a href="https://www.studentaccomo.co.za" target="_blank" class="alink"><span>🏠 StudentAccomo</span><span class="hint">studentaccomo.co.za →</span></a>
-          </div>
+      <div class="pj sr">
+        <div class="pt tp">
+          <img class="ph" src="portfolio_screenshot.png" onerror="this.style.display='none'"/>
+          <div class="tf tp"></div>
+          <span class="bdg">Live</span>
+          <span class="tlbl">Portfolio</span>
+        </div>
+        <div class="pb">
+          <div class="pn">Personal Portfolio</div>
+          <p class="pd">This portfolio website designed and built to demonstrate UX/UI skills. Clean dark-themed interface showcasing projects, skills, and certifications.</p>
+          <div class="ptgs"><span class="tg">HTML</span><span class="tg">CSS</span><span class="tg">JavaScript</span><span class="tg">UX/UI</span></div>
+          <a href="https://github.com/letho351" target="_blank" class="pl">View on GitHub</a>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- SKILLS -->
-  <section id="skills" class="sec">
-    <div class="inner">
-      <div class="sec-tag r">Skills</div>
-      <h2 class="sec-title r">What I bring to the table</h2>
-      <div class="skills-grid">
-        <div class="skill r"><div class="skill-ico">🎨</div><div class="skill-name">UX/UI Design</div><div class="skill-desc">Designing interfaces that are intuitive, accessible, and visually compelling.</div><div class="tags"><span class="tag">Figma</span><span class="tag">Wireframing</span><span class="tag">User Flows</span></div></div>
-        <div class="skill r"><div class="skill-ico">💻</div><div class="skill-name">Frontend Development</div><div class="skill-desc">Building responsive web interfaces with clean, semantic code.</div><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div></div>
-        <div class="skill r"><div class="skill-ico">☕</div><div class="skill-name">Application Development</div><div class="skill-desc">Building desktop and mobile applications with Java and OOP principles.</div><div class="tags"><span class="tag">Java</span><span class="tag">OOP</span><span class="tag">Node.js</span></div></div>
-        <div class="skill r"><div class="skill-ico">🧪</div><div class="skill-name">Software Testing</div><div class="skill-desc">Ensuring software quality. Currently completing CTFL-AT Agile Tester certification.</div><div class="tags"><span class="tag">Agile Testing</span><span class="tag">CTFL-AT</span><span class="tag">QA</span></div></div>
-        <div class="skill r"><div class="skill-ico">📊</div><div class="skill-name">Business Analysis</div><div class="skill-desc">Bridging business needs and technical solutions through requirements and documentation.</div><div class="tags"><span class="tag">Requirements</span><span class="tag">Process Modelling</span></div></div>
-        <div class="skill r"><div class="skill-ico">📋</div><div class="skill-name">Project Coordination</div><div class="skill-desc">Keeping projects on track through planning, communication, and collaboration.</div><div class="tags"><span class="tag">Planning</span><span class="tag">Agile</span><span class="tag">Communication</span></div></div>
+<section id="certifications" class="sec">
+  <div class="inn">
+    <div class="stag sr">Certifications and Education</div>
+    <h2 class="stitle sr">Qualifications</h2>
+    <div class="cgrid">
+      <div class="ct sr">
+        <div class="ci cib">🎓</div>
+        <div class="ci2">
+          <h4>Diploma in Information Technology</h4>
+          <p>Vaal University of Technology - Software Development (Java), Business Analysis, Web Management</p>
+          <span class="cs csp">In Progress 2023-2026</span>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects" class="sec sec-dark">
-    <div class="inner">
-      <div class="sec-tag r">Projects</div>
-      <h2 class="sec-title r">Things I've built</h2>
-      <div class="proj-grid">
-
-        <div class="proj feat r">
-          <div class="proj-thumb t-accomo">
-            <img class="photo" src="accomo_screenshot.png" onerror="this.style.display='none'"/>
-            <div class="thumb-fill t-accomo"></div>
-            <span class="badge">● Live</span>
-            <span class="thumb-lbl">Web Application</span>
-          </div>
-          <div class="proj-body">
-            <div class="proj-name">Student Accommodation Finder</div>
-            <p class="proj-desc">A web application helping VUT students find nearby accommodation. Students can discover, filter, and browse listings in one place. Built with a focus on usability and clean UX.</p>
-            <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">UX Design</span></div>
-            <a href="https://www.studentaccomo.co.za" target="_blank" class="proj-link">Visit Live Site →</a>
-          </div>
+      <div class="ct sr">
+        <div class="ci cio">🧪</div>
+        <div class="ci2">
+          <h4>CTFL-AT Agile Tester</h4>
+          <p>ISTQB Certified Tester Foundation Level Agile Tester. Currently actively studying.</p>
+          <span class="cs csp">In Progress</span>
         </div>
-
-        <div class="proj r">
-          <div class="proj-thumb t-port">
-            <img class="photo" src="portfolio_screenshot.png" onerror="this.style.display='none'"/>
-            <div class="thumb-fill t-port"></div>
-            <span class="badge">● Live</span>
-            <span class="thumb-lbl">Portfolio</span>
-          </div>
-          <div class="proj-body">
-            <div class="proj-name">Personal Portfolio</div>
-            <p class="proj-desc">This portfolio website — designed and built to demonstrate UX/UI skills. Clean dark-themed interface showcasing projects, skills, and certifications.</p>
-            <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">UX/UI</span></div>
-            <a href="https://github.com/letho351" target="_blank" class="proj-link">View on GitHub →</a>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
-
-  <!-- CERTIFICATIONS -->
-  <section id="certifications" class="sec">
-    <div class="inner">
-      <div class="sec-tag r">Certifications &amp; Education</div>
-      <h2 class="sec-title r">Qualifications</h2>
-      <div class="certs-grid">
-        <div class="cert r">
-          <div class="cert-ico ci-blue">🎓</div>
-          <div class="cert-info">
-            <h4>Diploma in Information Technology</h4>
-            <p>Vaal University of Technology · Software Development (Java), Business Analysis, Web Management</p>
-            <span class="cs cs-prog">In Progress · 2023–2026</span>
-          </div>
+      <div class="ct cl sr" onclick="openLb()">
+        <div class="ci cig">🌐</div>
+        <div class="ci2">
+          <h4>CCNAv7: Introduction to Networks</h4>
+          <p>Cisco Networking Academy - Networking fundamentals, IP addressing, protocols, and network configuration.</p>
+          <span class="cs csd">Completed 2024</span>
+          <span class="vh">Click to view certificate</span>
         </div>
-        <div class="cert r">
-          <div class="cert-ico ci-orange">🧪</div>
-          <div class="cert-info">
-            <h4>CTFL-AT — Agile Tester</h4>
-            <p>ISTQB Certified Tester Foundation Level – Agile Tester. Currently actively studying.</p>
-            <span class="cs cs-prog">In Progress</span>
-          </div>
-        </div>
-        <div class="cert click r" onclick="openLb()">
-          <div class="cert-ico ci-green">🌐</div>
-          <div class="cert-info">
-            <h4>CCNAv7: Introduction to Networks</h4>
-            <p>Cisco Networking Academy · Networking fundamentals, IP addressing, protocols, and network configuration.</p>
-            <span class="cs cs-done">Completed · 2024</span>
-            <span class="view-hint">👁 Click to view certificate</span>
-          </div>
-        </div>
-        <div class="cert r">
-          <div class="cert-ico ci-green">📜</div>
-          <div class="cert-info">
-            <h4>National Senior Certificate</h4>
-            <p>Mpilo Senior Secondary School · Geography, Life Sciences, Agricultural Sciences, Sepedi, English, Life Orientation, Mathematical Literacy</p>
-            <span class="cs cs-done">Completed · 2023</span>
-          </div>
+      </div>
+      <div class="ct sr">
+        <div class="ci cig">📜</div>
+        <div class="ci2">
+          <h4>National Senior Certificate</h4>
+          <p>Mpilo Senior Secondary School - Geography, Life Sciences, Agricultural Sciences, Sepedi, English, Life Orientation, Mathematical Literacy</p>
+          <span class="cs csd">Completed 2023</span>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="sec sec-dark">
-    <div class="contact-inner">
-      <div class="sec-tag r">Contact</div>
-      <h2 class="sec-title r">Let's connect</h2>
-      <p class="cdesc r">I'm open to internship opportunities, graduate programmes, and collaborations. Let's talk.</p>
-      <div class="contact-cards r">
-        <a href="mailto:lethokecollins@gmail.com" class="ccard"><div class="ccard-ico">✉️</div><h4>Email</h4><p>lethokecollins@gmail.com</p></a>
-        <a href="https://github.com/letho351" target="_blank" class="ccard"><div class="ccard-ico">⚡</div><h4>GitHub</h4><p>github.com/letho351</p></a>
-        <a href="tel:0671254429" class="ccard"><div class="ccard-ico">📞</div><h4>Phone</h4><p>067 125 4429</p></a>
-        <a href="https://www.studentaccomo.co.za" target="_blank" class="ccard"><div class="ccard-ico">🏠</div><h4>Live Project</h4><p>studentaccomo.co.za</p></a>
-      </div>
-      <a href="Sekhukhune_Collins_CV.docx" download class="btn-p r" style="margin:0 auto;display:inline-flex;">Download My CV ↓</a>
+<section id="contact" class="sec dark">
+  <div class="cin">
+    <div class="stag sr">Contact</div>
+    <h2 class="stitle sr">Lets connect</h2>
+    <p class="cd sr">I am open to internship opportunities, graduate programmes, and collaborations. Lets talk.</p>
+    <div class="ccards sr">
+      <a href="mailto:lethokecollins@gmail.com" class="cc"><h4>Email</h4><p>lethokecollins@gmail.com</p></a>
+      <a href="https://github.com/letho351" target="_blank" class="cc"><h4>GitHub</h4><p>github.com/letho351</p></a>
+      <a href="tel:0671254429" class="cc"><h4>Phone</h4><p>067 125 4429</p></a>
+      <a href="https://www.studentaccomo.co.za" target="_blank" class="cc"><h4>Live Project</h4><p>studentaccomo.co.za</p></a>
     </div>
-  </section>
+    <a href="Sekhukhune_Collins_CV.docx" download class="bp sr" style="margin:0 auto;display:inline-flex;">Download My CV</a>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <span>© 2025 Lethoke Collins. Built with HTML, CSS &amp; JS.</span>
-    <span>Vanderbijlpark, South Africa · <a href="https://github.com/letho351" target="_blank">github.com/letho351</a></span>
-  </footer>
+<footer>
+  <span>2025 Lethoke Collins. Built with HTML, CSS and JS.</span>
+  <span>Vanderbijlpark, South Africa - <a href="https://github.com/letho351" target="_blank">github.com/letho351</a></span>
+</footer>
 
-  <script>
-    // Cursor
-    const cur = document.getElementById('cur');
-    const curR = document.getElementById('curR');
-    let mx=0,my=0,rx=0,ry=0;
-    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-    (function anim(){
-      cur.style.transform = `translate(${mx-5}px,${my-5}px)`;
-      rx += (mx-rx-19)*0.1;
-      ry += (my-ry-19)*0.1;
-      curR.style.transform = `translate(${rx}px,${ry}px)`;
-      requestAnimationFrame(anim);
-    })();
+<script>
+// Loader
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    document.getElementById('loader').classList.add('hide');
+  }, 1500);
+});
 
-    // Scroll reveal
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
-    }, { threshold: 0.05 });
-    document.querySelectorAll('.r').forEach(el => obs.observe(el));
+// Cursor
+var cur=document.getElementById('cur');
+var curR=document.getElementById('curR');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+function animC(){
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  curR.style.left=rx+'px';curR.style.top=ry+'px';
+  requestAnimationFrame(animC);
+}
+animC();
 
-    // Failsafe — show all after 1.5s
-    setTimeout(() => document.querySelectorAll('.r').forEach(el => el.classList.add('on')), 1500);
+// Scroll reveal
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});
+},{threshold:0.1});
+document.querySelectorAll('.sr').forEach(function(el){obs.observe(el);});
+setTimeout(function(){document.querySelectorAll('.sr').forEach(function(el){el.classList.add('on');});},2000);
 
-    // Hero entrance
-    document.querySelectorAll('#hero .hero-badge,#hero .hero-name,#hero .hero-pills,#hero .hero-desc,#hero .ctas').forEach((el,i) => {
-      el.style.cssText += 'opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;';
-      setTimeout(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 150+i*100);
-    });
-
-    // Lightbox
-    function openLb(){ document.getElementById('lb').classList.add('open'); }
-    function closeLb(){ document.getElementById('lb').classList.remove('open'); }
-    document.getElementById('lb').addEventListener('click', e => { if(e.target===e.currentTarget) closeLb(); });
-    document.addEventListener('keydown', e => { if(e.key==='Escape') closeLb(); });
-  </script>
+// Lightbox
+function openLb(){document.getElementById('lb').classList.add('open');}
+function closeLb(){document.getElementById('lb').classList.remove('open');}
+document.getElementById('lb').addEventListener('click',function(e){if(e.target===e.currentTarget)closeLb();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
+</script>
 </body>
 </html>
