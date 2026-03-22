@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lethoke Collins · Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -11,10 +12,16 @@
       --border:rgba(255,255,255,0.07);--text:#F0EEF8;--muted:#7A7890;
       --accent:#7C6FFF;--accent2:#FF6B6B;--accent3:#00D9A3;
       --grad:linear-gradient(135deg,#7C6FFF,#FF6B6B);
-      --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+      --font:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
     }
     html{scroll-behavior:smooth}
-    body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+
+    /* CURSOR */
+    .cursor{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:screen}
+    .cursor-ring{width:38px;height:38px;border:1.5px solid rgba(124,111,255,0.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width 0.25s,height 0.25s,border-color 0.25s}
+    body:has(a:hover) .cursor-ring,body:has(.click:hover) .cursor-ring{width:54px;height:54px;border-color:rgba(255,107,107,0.7)}
+    a,.click,.btn-p,.btn-s{cursor:none}
 
     /* NAV */
     nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
@@ -42,7 +49,7 @@
     .btn-s{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--text);padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:500;text-decoration:none;border:1px solid var(--border);transition:border-color 0.2s,transform 0.2s}
     .btn-s:hover{border-color:var(--accent);transform:translateY(-2px)}
 
-    /* SECTIONS */
+    /* SHARED */
     .sec{padding:6rem 4rem;position:relative;z-index:1}
     .sec-dark{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
     .inner{max-width:1100px;margin:0 auto}
@@ -84,10 +91,10 @@
     .proj.feat{grid-column:span 2}
     .proj-thumb{height:200px;position:relative;overflow:hidden}
     .proj.feat .proj-thumb{height:240px}
-    .proj-thumb img.photo{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:2}
-    .thumb-bg{width:100%;height:100%;position:absolute;inset:0;z-index:1}
+    .proj-thumb .photo{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:2}
     .t-accomo{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364)}
     .t-port{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)}
+    .thumb-fill{width:100%;height:100%;position:absolute;inset:0;z-index:1}
     .badge{position:absolute;top:1rem;right:1rem;font-size:0.68rem;padding:0.3rem 0.75rem;border-radius:100px;background:rgba(0,217,163,0.15);color:var(--accent3);border:1px solid rgba(0,217,163,0.3);font-weight:500;z-index:3}
     .thumb-lbl{position:absolute;bottom:1rem;left:1.2rem;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);z-index:3}
     .proj-body{padding:1.6rem}
@@ -100,7 +107,7 @@
     /* CERTS */
     .certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;margin-top:2.5rem}
     .cert{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.6rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s}
-    .cert.click{cursor:pointer}
+    .cert.click{cursor:none}
     .cert.click:hover{border-color:var(--accent3)}
     .cert-ico{width:42px;height:42px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
     .ci-blue{background:rgba(124,111,255,0.12)}
@@ -117,7 +124,7 @@
     .lb{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.93);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:2rem}
     .lb.open{display:flex}
     .lb-inner{position:relative;max-width:860px;width:100%}
-    .lb-close{position:absolute;top:-1rem;right:-1rem;width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.95rem;color:var(--muted);transition:color 0.2s,border-color 0.2s;z-index:10}
+    .lb-close{position:absolute;top:-1rem;right:-1rem;width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;font-size:0.95rem;color:var(--muted);transition:color 0.2s,border-color 0.2s;z-index:10}
     .lb-close:hover{color:var(--text);border-color:var(--accent2)}
     .lb-frame{width:100%;height:72vh;border:none;border-radius:10px;display:block;background:#fff}
     .lb-cap{text-align:center;margin-top:0.8rem;font-size:0.8rem;color:var(--muted)}
@@ -144,10 +151,9 @@
     .r{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
     .r.on{opacity:1;transform:translateY(0)}
 
-    /* RESPONSIVE */
     @media(max-width:768px){
       nav{padding:1rem 1.5rem}.nav-links{display:none}
-      .sec,.sec-dark{padding:4rem 1.5rem}
+      .sec{padding:4rem 1.5rem}
       #hero{padding:6rem 1.5rem 3rem}
       .about-grid{grid-template-columns:1fr;gap:2.5rem}
       .proj-grid{grid-template-columns:1fr}
@@ -159,11 +165,16 @@
 </head>
 <body>
 
+  <div class="cursor" id="cur"></div>
+  <div class="cursor-ring" id="curR"></div>
+
   <!-- LIGHTBOX -->
   <div class="lb" id="lb">
     <div class="lb-inner">
       <div class="lb-close" onclick="closeLb()">✕</div>
-      <iframe class="lb-frame" src="cisco_cert.pdf"></iframe>
+      <div style="background:#fff;border-radius:10px;overflow:hidden;">
+        <iframe class="lb-frame" src="cisco_cert.pdf"></iframe>
+      </div>
       <div class="lb-cap">CCNAv7: Introduction to Networks · Cisco Networking Academy · 2024</div>
     </div>
   </div>
@@ -181,7 +192,7 @@
   </nav>
 
   <!-- HERO -->
-  <section id="hero" class="sec" style="padding-top:8rem">
+  <section id="hero">
     <div class="glow1"></div>
     <div class="glow2"></div>
     <div class="hero-badge"><span class="dot"></span> Available for internships &amp; graduate programmes</div>
@@ -221,7 +232,7 @@
       </div>
       <div class="r" style="display:flex;justify-content:center;">
         <div class="about-card">
-          <!-- Add profile.jpg to your folder to show your photo -->
+          <!-- Add profile.jpg to your GitHub folder to show your photo -->
           <div class="avatar">
             <span>LC</span>
             <img src="profile.jpg" alt="" onerror="this.style.display='none'"/>
@@ -263,14 +274,14 @@
 
         <div class="proj feat r">
           <div class="proj-thumb t-accomo">
-            <img class="photo" src="accomo_screenshot.jpg" alt="" onerror="this.style.display='none'"/>
-            <div class="thumb-bg t-accomo"></div>
+            <img class="photo" src="accomo_screenshot.png" onerror="this.style.display='none'"/>
+            <div class="thumb-fill t-accomo"></div>
             <span class="badge">● Live</span>
             <span class="thumb-lbl">Web Application</span>
           </div>
           <div class="proj-body">
             <div class="proj-name">Student Accommodation Finder</div>
-            <p class="proj-desc">A web application helping VUT students find nearby accommodation. Solves a real on-campus problem — students can discover, filter, and browse listings in one place.</p>
+            <p class="proj-desc">A web application helping VUT students find nearby accommodation. Students can discover, filter, and browse listings in one place. Built with a focus on usability and clean UX.</p>
             <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">UX Design</span></div>
             <a href="https://www.studentaccomo.co.za" target="_blank" class="proj-link">Visit Live Site →</a>
           </div>
@@ -278,14 +289,14 @@
 
         <div class="proj r">
           <div class="proj-thumb t-port">
-            <img class="photo" src="portfolio_screenshot.jpg" alt="" onerror="this.style.display='none'"/>
-            <div class="thumb-bg t-port"></div>
+            <img class="photo" src="portfolio_screenshot.png" onerror="this.style.display='none'"/>
+            <div class="thumb-fill t-port"></div>
             <span class="badge">● Live</span>
             <span class="thumb-lbl">Portfolio</span>
           </div>
           <div class="proj-body">
             <div class="proj-name">Personal Portfolio</div>
-            <p class="proj-desc">This portfolio website — designed and built to demonstrate UX/UI skills. Showcasing projects, skills, and certifications in a clean dark-themed interface.</p>
+            <p class="proj-desc">This portfolio website — designed and built to demonstrate UX/UI skills. Clean dark-themed interface showcasing projects, skills, and certifications.</p>
             <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">UX/UI</span></div>
             <a href="https://github.com/letho351" target="_blank" class="proj-link">View on GitHub →</a>
           </div>
@@ -361,7 +372,20 @@
   </footer>
 
   <script>
-    // Reveal on scroll
+    // Cursor
+    const cur = document.getElementById('cur');
+    const curR = document.getElementById('curR');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    (function anim(){
+      cur.style.transform = `translate(${mx-5}px,${my-5}px)`;
+      rx += (mx-rx-19)*0.1;
+      ry += (my-ry-19)*0.1;
+      curR.style.transform = `translate(${rx}px,${ry}px)`;
+      requestAnimationFrame(anim);
+    })();
+
+    // Scroll reveal
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
     }, { threshold: 0.05 });
@@ -373,7 +397,7 @@
     // Hero entrance
     document.querySelectorAll('#hero .hero-badge,#hero .hero-name,#hero .hero-pills,#hero .hero-desc,#hero .ctas').forEach((el,i) => {
       el.style.cssText += 'opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;';
-      setTimeout(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 150 + i*100);
+      setTimeout(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 150+i*100);
     });
 
     // Lightbox
